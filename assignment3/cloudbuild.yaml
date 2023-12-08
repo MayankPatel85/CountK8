@@ -1,0 +1,12 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: [ 'build', '-t', 'docker_image_url', '.' ]
+- name: 'gcr.io/cloud-builders/docker'
+  args: [ 'push', 'docker_image_url']
+- name: 'gcr.io/cloud-builders/gke-deploy'
+  args:
+  - run
+  - --filename=deployment.yaml
+  - --image=docker_image_url
+  - --location=us-central1-c
+  - --cluster=as3-k8

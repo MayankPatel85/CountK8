@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: as3-c2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: as3-c2
+  template:
+    metadata:
+      labels:
+        app: as3-c2
+    spec:
+      volumes:
+      - name: as3-pvc
+        persistentVolumeClaim:
+          claimName: as3-pvc
+      containers:
+      - name: as3-c2
+        image: docker_image_url
+        ports:
+        - containerPort: 8000
+        volumeMounts:
+        - mountPath: "/Mayankkumar_PV_dir/"
+          name: as3-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: as3-c2-service
+spec:
+  selector:
+    app: as3-c2
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
